@@ -4,5 +4,5 @@ public record SalaRequest(
         String nome,
         String totalAssemtos,
         Integer fileiras,
-        Integer assentosFileira
+        Integer assentosPorFileira
 ) {}
