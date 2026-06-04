@@ -4,6 +4,7 @@ import com.Senai.Filmes.DTO.Request.SalaRequest;
 import com.Senai.Filmes.DTO.Response.SalaResponse;
 import com.Senai.Filmes.Service.SalaService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+
+@Tag(name = "Salas", description = "Endpoint para gerenciamento de salas do cinema")
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/salas")
@@ -37,6 +40,7 @@ public class SalaController {
     }
 
     @PostMapping
+    //@PreAuthorize("hasRole(ADMIN)")
     @Operation(summary = "Criar Sala", description = "Cadastrar uma nova sala com seus assentos")
     public ResponseEntity<SalaResponse> criarSala(@RequestBody SalaRequest salaRequest) {
         return new ResponseEntity<>(salaService.cadastrarSala(salaRequest), HttpStatus.CREATED);
@@ -52,6 +56,6 @@ public class SalaController {
     @Operation(summary = "Deletar sala", description = "Remove uma sala do sistema")
     public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         salaService.deletar(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
