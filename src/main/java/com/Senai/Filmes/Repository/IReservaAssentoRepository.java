@@ -21,7 +21,7 @@ public interface IReservaAssentoRepository extends JpaRepository<ReservaAssento,
                              @Param("status") StatusReserva statusReserva);
 
     @Query("SELECT ra.assento.id FROM ReservaAssento ra " +
-            "WHERE ra.reserva.id = :sessaoId AND ra.reserva.status = :status")
+            "WHERE ra.reserva.sessao.id = :sessaoId AND ra.reserva.status = :status")
     List<UUID> findAssentosOcupadosBySessaoId(@Param("sessaoId") UUID sessaoId,
                                               @Param("status") StatusReserva statusReserva);
 }

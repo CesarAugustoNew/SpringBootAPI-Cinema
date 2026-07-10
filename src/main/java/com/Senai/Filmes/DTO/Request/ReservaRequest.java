@@ -5,6 +5,6 @@ import java.util.UUID;
 
 public record ReservaRequest(
         UUID sessaoId,
-        List<UUID> assentoId
+        List<UUID> assentoIds
 ) {
 }

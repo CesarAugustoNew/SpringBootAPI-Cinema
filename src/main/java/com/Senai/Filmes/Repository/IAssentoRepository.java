@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface IAssentoRepository extends JpaRepository<Assento, UUID> {
-    List<Assento> findAssentoById(UUID salaId);
+    List<Assento> findBySalaId(UUID salaId);
 }
