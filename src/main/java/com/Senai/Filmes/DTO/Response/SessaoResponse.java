@@ -5,8 +5,9 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record SessaoResponse (
-        UUID salaId,
+        UUID id,
         FilmeResponse filme,
+        SalaResponse sala,
         LocalDateTime inicio,
         LocalDateTime fim,
         BigDecimal preco

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -55,7 +56,23 @@ public class FilmeController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Deletar filme", description = "Remove um filme do sistema")
-    public  ResponseEntity<FilmeResponse> deletar(@PathVariable UUID id){
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Void> deletar(@PathVariable UUID id){
+        filmeService.deletar(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/{id}/imagem")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Upload de pôster", description = "Envia (ou substitui) a imagem do pôster de um filme")
+    public ResponseEntity<FilmeResponse> uploadImagem(@PathVariable UUID id,
+                                                       @RequestParam("imagem") MultipartFile imagem) {
+        return new ResponseEntity<>(filmeService.atualizarImagem(id, imagem), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}/imagem")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Remover pôster", description = "Remove a imagem do pôster de um filme")
+    public ResponseEntity<FilmeResponse> removerImagem(@PathVariable UUID id) {
+        return new ResponseEntity<>(filmeService.removerImagem(id), HttpStatus.OK);
     }
 }

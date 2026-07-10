@@ -41,7 +41,7 @@ public class SalaController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole(ADMIN)")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Criar Sala", description = "Cadastrar uma nova sala com seus assentos")
     public ResponseEntity<SalaResponse> criarSala(@RequestBody SalaRequest salaRequest) {
         return new ResponseEntity<>(salaService.cadastrarSala(salaRequest), HttpStatus.CREATED);
