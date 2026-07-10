@@ -27,7 +27,7 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        if (usuarioRepository.existeByEmail(adminEmail)) {
+        if (usuarioRepository.existsByEmail(adminEmail)) {
             return;
         }
 

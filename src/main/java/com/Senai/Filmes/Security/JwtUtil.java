@@ -2,7 +2,6 @@ package com.Senai.Filmes.Security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -17,23 +16,23 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${}jwc.expiration")
+    @Value("${jwt.expiration}")
     private long expiration;
 
-    private SecretKey getChave(){
+    private SecretKey getChave() {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String gerarToken(UserDetails userDetails){
+    public String gerarToken(UserDetails userDetails) {
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + expiration ))
+                .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getChave())
                 .compact();
     }
 
-    public String extrairEmail(String token){
+    public String extrairEmail(String token) {
         return Jwts.parser()
                 .verifyWith(getChave())
                 .build()
@@ -42,9 +41,8 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    public boolean validarToken(String token, UserDetails userDetails){
+    public boolean validarToken(String token, UserDetails userDetails) {
         String email = extrairEmail(token);
-
         return email.equals(userDetails.getUsername()) && !isTokenExpirado(token);
     }
 
@@ -57,4 +55,5 @@ public class JwtUtil {
                 .getExpiration()
                 .before(new Date());
     }
+
 }
