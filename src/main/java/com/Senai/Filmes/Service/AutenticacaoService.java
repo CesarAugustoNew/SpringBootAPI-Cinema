@@ -37,7 +37,7 @@ public class AutenticacaoService {
 
 
     public AuthResponse cadastrarUsuario(CadastroRequest request) {
-        if (usuarioRepository.existeByEmail(request.email())){
+        if (usuarioRepository.existsByEmail(request.email())){
             throw new IllegalArgumentException("Email já está cadastrado");
         }
 
