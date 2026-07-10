@@ -114,4 +114,9 @@ src/main/java/com/Senai/Filmes
 | Admin     | PATCH  | `/api/admin/usuarios/{id}/promover`    | ADMIN          |
 
 ---
+<img width="1902" height="924" alt="swwg1" src="https://github.com/user-attachments/assets/3a78f9c7-d58b-497c-b4f9-a46654e77ded" />
+<img width="1895" height="917" alt="swwg2" src="https://github.com/user-attachments/assets/9791a10b-da7a-4751-8ec5-c2592ce97bce" />
+<img width="1907" height="882" alt="swwg3" src="https://github.com/user-attachments/assets/ed09e243-049d-467b-bfbd-a40ce28a68dc" />
+
+
 
