@@ -4,16 +4,17 @@ API RESTful em **Java + Spring Boot** para um sistema de cinema: catálogo de fi
 
 ---
 
-## 🛠 Tecnologias
+**Tecnologias utilizadas:**
 
-- Java 21
-- Spring Boot 4 / Spring Security 7
-- Spring Web, Spring Data JPA (Hibernate)
-- JWT (autenticação stateless)
-- MySQL
-- Maven
-- Lombok
-- Swagger / OpenAPI (springdoc)
+![Java](https://img.shields.io/badge/Java-21-ED8B00?style=flat-square\&logo=openjdk\&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4-6DB33F?style=flat-square\&logo=springboot\&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring%20Security-7-6DB33F?style=flat-square\&logo=springsecurity\&logoColor=white)
+![Hibernate](https://img.shields.io/badge/Hibernate-JPA-59666C?style=flat-square\&logo=hibernate\&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-Authentication-000000?style=flat-square\&logo=jsonwebtokens\&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?style=flat-square\&logo=mysql\&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-Build-C71A36?style=flat-square\&logo=apachemaven\&logoColor=white)
+![Lombok](https://img.shields.io/badge/Lombok-BC4521?style=flat-square\&logo=lombok\&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-85EA2D?style=flat-square\&logo=swagger\&logoColor=black)
 
 ---
 
