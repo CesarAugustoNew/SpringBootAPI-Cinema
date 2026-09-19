@@ -25,6 +25,11 @@ public class Filme {
     @Column(columnDefinition = "TEXT")
     private String descricao;
 
+    // TEXT em vez do padrão (VARCHAR 255): agora que o pôster vira uma
+    // imagem em base64 embutida direto aqui (veja FilmeService), o
+    // texto é bem mais longo que uma URL comum e não cabe no limite
+    // padrão de uma coluna de texto curto.
+    @Column(columnDefinition = "TEXT")
     private String urlPoster;
 
     @NotNull(message = "O campo genero é obrigatorio")
