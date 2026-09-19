@@ -7,16 +7,12 @@ import com.Senai.Filmes.Model.Filme;
 import com.Senai.Filmes.Repository.IFilmeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,16 +21,6 @@ public class FilmeService {
 
     @Autowired
     private IFilmeRepository filmeRepository;
-
-    /*
-      Pasta onde os pôsteres enviados pelo admin são gravados no disco
-      do servidor. Pode ser configurada em application.properties
-      via "app.upload.dir" (por padrão usa uma pasta "uploads" na raiz
-      do projeto). Os arquivos ficam em <uploadDir>/posters/ e são
-      expostos publicamente em /uploads/posters/** (ver WebConfig).
-    */
-    @Value("${app.upload.dir:uploads}")
-    private String uploadDir;
 
     //crud
     public List<FilmeResponse> listarTodos() {
@@ -77,13 +63,19 @@ public class FilmeService {
     }
 
     /*
-      Salva o arquivo de imagem enviado pelo admin em disco e atualiza
-      o campo urlPoster do filme para apontar para a rota pública
-      /uploads/posters/<nome-gerado>.
+      Converte a imagem enviada pelo admin para uma "data URL" em
+      base64 (ex.: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ...") e
+      guarda esse texto direto no campo urlPoster, no banco.
 
-      Um nome de arquivo aleatório (UUID) é usado para evitar
-      conflitos entre filmes diferentes e problemas com caracteres
-      especiais no nome original do arquivo.
+      Antes o arquivo era gravado em disco no servidor — mas no Render
+      (plano free) esse disco não é permanente: some sempre que o
+      serviço reinicia, inclusive só por ter ficado inativo um tempo.
+      Guardando a imagem dentro do próprio banco (junto com o resto
+      dos dados do filme), ela nunca se perde.
+
+      Como o valor guardado já é uma data URL, o front-end usa ele
+      direto num <img src="..."> sem precisar de nenhuma mudança —
+      funciona exatamente como funcionava com uma URL de arquivo.
     */
     public FilmeResponse atualizarImagem(UUID id, MultipartFile arquivo) {
         Filme filme = filmeRepository.findById(id)
@@ -94,73 +86,29 @@ public class FilmeService {
         }
 
         try {
-            Path pastaPosters = Paths.get(uploadDir, "posters");
-            Files.createDirectories(pastaPosters);
+            String tipoConteudo = arquivo.getContentType() != null ? arquivo.getContentType() : "image/jpeg";
+            String base64 = Base64.getEncoder().encodeToString(arquivo.getBytes());
+            String dataUrl = "data:" + tipoConteudo + ";base64," + base64;
 
-            String nomeArquivo = UUID.randomUUID() + extensaoDoArquivo(arquivo.getOriginalFilename());
-            Path destino = pastaPosters.resolve(nomeArquivo);
-            Files.copy(arquivo.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
-
-            removerArquivoPosterAtual(filme);
-
-            filme.setUrlPoster("/uploads/posters/" + nomeArquivo);
+            filme.setUrlPoster(dataUrl);
             return toResponse(filmeRepository.save(filme));
         } catch (IOException e) {
-            throw new UncheckedIOException("Erro ao salvar a imagem do filme", e);
+            throw new UncheckedIOException("Erro ao processar a imagem do filme", e);
         }
     }
 
     /*
-      Remove o pôster de um filme: apaga o arquivo salvo em disco
-      (se existir) e limpa o campo urlPoster.
+      Remove o pôster de um filme: como a imagem mora só no campo
+      urlPoster (não existe mais arquivo em disco), basta limpar esse
+      campo.
     */
     public FilmeResponse removerImagem(UUID id) {
         Filme filme = filmeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Filme não encontrado"));
 
-        removerArquivoPosterAtual(filme);
         filme.setUrlPoster(null);
         return toResponse(filmeRepository.save(filme));
     }
-
-    private void removerArquivoPosterAtual(Filme filme) {
-        String urlAtual = filme.getUrlPoster();
-        if (urlAtual != null && urlAtual.startsWith("/uploads/")) {
-            try {
-                Path caminhoAntigo = Paths.get(uploadDir, urlAtual.substring("/uploads/".length()));
-                Files.deleteIfExists(caminhoAntigo);
-            } catch (IOException ignored) {
-                // Se não conseguir apagar o arquivo antigo, seguimos em frente —
-                // não é motivo para impedir a troca/remoção do pôster.
-            }
-        }
-    }
-
-    private String extensaoDoArquivo(String nomeOriginal) {
-        if (nomeOriginal != null && nomeOriginal.contains(".")) {
-            return nomeOriginal.substring(nomeOriginal.lastIndexOf("."));
-        }
-        return "";
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     private FilmeResponse toResponse(Filme filme) {
         return new FilmeResponse(
@@ -172,7 +120,6 @@ public class FilmeService {
                 filme.getDuracaoMinutos()
         );
     }
-
 
 }
 
