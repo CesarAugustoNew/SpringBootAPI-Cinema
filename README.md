@@ -1,123 +1,87 @@
-# 🎬 CineSenai — API (SpringBootAPI-Cinema)
+<div align="center">
 
-API RESTful em **Java + Spring Boot** para um sistema de cinema: catálogo de filmes, salas, sessões, reservas de assentos e um painel administrativo. Serve de back-end para o front-end **CineSenai-Final** (React + Vite).
+# CineSenai — API
 
----
+Back-end de um sistema de cinema (catálogo de filmes, salas, sessões, reservas de assento e painel administrativo), construído em **Java** com **Spring Boot**.
 
-**Tecnologias utilizadas:**
+![Java](https://img.shields.io/badge/Java-24-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4-6DB33F?style=flat-square&logo=springboot&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring%20Security-JWT-6DB33F?style=flat-square&logo=springsecurity&logoColor=white)
+![Database](https://img.shields.io/badge/Database-PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white)
+![Deploy](https://img.shields.io/badge/Deploy-Render-46E3B7?style=flat-square&logo=render&logoColor=white)
+![Docker](https://img.shields.io/badge/Container-Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Swagger](https://img.shields.io/badge/Docs-Swagger-85EA2D?style=flat-square&logo=swagger&logoColor=black)
 
-![Java](https://img.shields.io/badge/Java-21-ED8B00?style=flat-square\&logo=openjdk\&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4-6DB33F?style=flat-square\&logo=springboot\&logoColor=white)
-![Spring Security](https://img.shields.io/badge/Spring%20Security-7-6DB33F?style=flat-square\&logo=springsecurity\&logoColor=white)
-![Hibernate](https://img.shields.io/badge/Hibernate-JPA-59666C?style=flat-square\&logo=hibernate\&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT-Authentication-000000?style=flat-square\&logo=jsonwebtokens\&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?style=flat-square\&logo=mysql\&logoColor=white)
-![Maven](https://img.shields.io/badge/Maven-Build-C71A36?style=flat-square\&logo=apachemaven\&logoColor=white)
-![Lombok](https://img.shields.io/badge/Lombok-BC4521?style=flat-square\&logo=lombok\&logoColor=white)
-![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-85EA2D?style=flat-square\&logo=swagger\&logoColor=black)
+[**🔗 API publicada**](#) · [**📘 Documentação (Swagger)**](#) · [**🖥️ Repositório do front-end**](#)
 
----
-
-## ▶️ Como rodar
-
-### Pré-requisitos
-- JDK 21+
-- Maven (ou usar o `mvnw` incluso no projeto)
-- MySQL rodando localmente na porta `3306`
-
-### 1. Criar o banco de dados
-```sql
-CREATE DATABASE cinema;
-```
-As tabelas são criadas automaticamente na primeira execução (`spring.jpa.hibernate.ddl-auto=update`).
-
-### 2. Configurar credenciais do banco
-Em `src/main/resources/application.properties`, ajuste usuário/senha do MySQL se necessário:
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/cinema?useSSL=false&serverTimezone=UTC
-spring.datasource.username=root
-spring.datasource.password=Cesar123
-```
-
-### 3. Subir a aplicação
-```bash
-./mvnw spring-boot:run
-```
-A API sobe em `http://localhost:8080`.
-
-### 4. Usuário admin inicial
-Na primeira execução, um usuário administrador é criado automaticamente:
-- **E-mail:** `admin@cinemasenai.com`
-- **Senha:** `Admin@134`
-
-(configuráveis via `admin.email` e `admin.senha` em `application.properties`, se quiser sobrescrever)
+</div>
 
 ---
 
-## 📖 Documentação interativa (Swagger)
+## Sobre este projeto
 
-Com a aplicação rodando, acesse:
-```
-http://localhost:8080/swagger-ui.html
-```
+Esta é a API REST do CineSenai: guarda e organiza filmes, salas, sessões de exibição e as reservas de assento de cada usuário, além de um painel só para administradores. Ela não tem tela nenhuma — só recebe pedidos (do front-end React, ou de qualquer outro programa) e responde em formato de dados (JSON).
 
----
+O front-end que consome esta API é um projeto separado, feito em React ([link do repositório](#)).
 
-## 🚀 Funcionalidades
+## Funcionalidades
 
-- Cadastro/login de usuários com JWT
-- Controle de acesso por cargo (`USUARIO` / `ADMIN`) via Spring Security
-- CRUD de filmes, incluindo upload/remoção de pôster (salvo localmente em `uploads/posters` e servido em `/uploads/**`)
-- CRUD de salas (geração automática dos assentos por fileira/quantidade)
-- Agendamento e remoção de sessões de exibição
+- Cadastro de usuário e login com senha, com dois papéis: **usuário comum** e **administrador**
+- Catálogo de filmes (título, descrição, gênero, duração, pôster)
+- Cadastro de salas, com geração automática dos assentos por fileira/quantidade
+- Agendamento de sessões de exibição por filme e sala
 - Reserva de assentos por sessão, com verificação de assentos já ocupados
-- Cancelamento de reservas (usuário cancela as próprias; admin cancela qualquer uma)
-- Painel admin: listagem geral de reservas, relatório de receita/vendas por filme, promoção de usuário a admin
+- Cancelamento de reserva (o próprio usuário cancela as suas; administrador cancela qualquer uma)
+- Painel administrativo: listagem geral de reservas, relatório de receita/vendas por filme, promoção de usuário a administrador
 
----
+## Tecnologias usadas
 
-## 📂 Estrutura do projeto
+| Item | Tecnologia |
+|---|---|
+| Linguagem | Java 24 |
+| Framework | Spring Boot |
+| Acesso ao banco | Spring Data JPA (Hibernate) |
+| Autenticação | Spring Security + JWT |
+| Banco de dados | PostgreSQL |
+| Documentação | Swagger / OpenAPI |
+| Empacotamento | Docker |
+| Publicação | Render |
 
-```
-src/main/java/com/Senai/Filmes
-├── Controller      # endpoints REST
-├── Service         # regras de negócio
-├── Repository      # acesso a dados (Spring Data JPA)
-├── Model           # entidades JPA
-│   └── Enums
-├── DTO
-│   ├── Request
-│   └── Response
-├── Security        # JWT, filtros e configuração do Spring Security
-└── Config          # inicialização de dados, upload de arquivos, etc.
-```
+## Como a API é organizada
 
----
+Segue o modelo em camadas mais comum para esse tipo de projeto:
 
-## 🔌 Principais endpoints
+- **Controller** — recebe a requisição HTTP (ex.: "reservar um assento") e devolve a resposta.
+- **Service** — contém as regras de negócio (ex.: "não deixar reservar um assento que já está ocupado").
+- **Repository** — conversa com o banco de dados.
+- **DTO** (Request/Response) — formato dos dados que entram e saem da API, sem expor as entidades internas diretamente.
 
-| Recurso   | Método | Rota                                  | Acesso         |
-|-----------|--------|----------------------------------------|----------------|
-| Auth      | POST   | `/api/auth/cadastro`                   | Público        |
-| Auth      | POST   | `/api/auth/login`                      | Público        |
-| Filmes    | GET    | `/api/filmes`, `/api/filmes/{id}`      | Público        |
-| Filmes    | POST/PUT/DELETE | `/api/filmes...`               | ADMIN          |
-| Filmes    | POST/DELETE | `/api/filmes/{id}/imagem`          | ADMIN          |
-| Salas     | GET    | `/api/salas`, `/api/salas/{id}`        | Público        |
-| Salas     | POST/DELETE | `/api/salas...`                    | ADMIN          |
-| Sessões   | GET    | `/api/sessoes?data=` ou `?filmeId=`    | Público        |
-| Sessões   | GET    | `/api/sessoes/{id}`, `/{id}/assentos`  | Público        |
-| Sessões   | POST/DELETE | `/api/sessoes...`                  | ADMIN          |
-| Reservas  | POST   | `/api/reservas`                        | Autenticado    |
-| Reservas  | GET    | `/api/reservas/minhas`                 | Autenticado    |
-| Reservas  | DELETE | `/api/reservas/{id}`                   | Dono ou ADMIN  |
-| Admin     | GET    | `/api/admin/reservas`, `/relatorios`   | ADMIN          |
-| Admin     | PATCH  | `/api/admin/usuarios/{id}/promover`    | ADMIN          |
+## Principais endpoints
 
----
-<img width="1902" height="924" alt="swwg1" src="https://github.com/user-attachments/assets/3a78f9c7-d58b-497c-b4f9-a46654e77ded" />
-<img width="1895" height="917" alt="swwg2" src="https://github.com/user-attachments/assets/9791a10b-da7a-4751-8ec5-c2592ce97bce" />
-<img width="1907" height="882" alt="swwg3" src="https://github.com/user-attachments/assets/ed09e243-049d-467b-bfbd-a40ce28a68dc" />
+| Recurso | Método | Rota | Acesso |
+|---|---|---|---|
+| Autenticação | POST | `/api/auth/cadastro`, `/api/auth/login` | Público |
+| Filmes | GET | `/api/filmes`, `/api/filmes/{id}` | Público |
+| Filmes | POST/PUT/DELETE | `/api/filmes/...` | Administrador |
+| Filmes | POST/DELETE | `/api/filmes/{id}/imagem` | Administrador |
+| Salas | GET | `/api/salas`, `/api/salas/{id}` | Público |
+| Salas | POST/DELETE | `/api/salas/...` | Administrador |
+| Sessões | GET | `/api/sessoes`, `/api/sessoes/{id}`, `/api/sessoes/{id}/assentos` | Público |
+| Sessões | POST/DELETE | `/api/sessoes/...` | Administrador |
+| Reservas | POST | `/api/reservas` | Autenticado |
+| Reservas | GET | `/api/reservas/minhas` | Autenticado |
+| Reservas | DELETE | `/api/reservas/{id}` | Dono da reserva ou Administrador |
+| Admin | GET | `/api/admin/reservas`, `/api/admin/relatorios` | Administrador |
+| Admin | PATCH | `/api/admin/usuarios/{id}/promover` | Administrador |
 
+## Segurança
 
+O login funciona com **JWT** (JSON Web Token): ao entrar com e-mail e senha, o usuário recebe um token que deve ser enviado nas próximas requisições, provando quem ele é sem precisar mandar a senha de novo. As rotas de administrador (cadastro de filmes, salas, sessões, relatórios) exigem que o token pertença a um usuário com papel **ADMIN**.
 
+## Pôsteres dos filmes
+
+Os pôsteres enviados pelo administrador são convertidos para **base64** e guardados direto no banco de dados, junto com as demais informações do filme — não ficam salvos como arquivo separado no servidor. Isso evita que a imagem se perca quando o serviço reinicia (algo comum em provedores de hospedagem com disco não permanente).
+
+## Deploy
+
+Publicada no **Render**, com banco de dados **PostgreSQL** também hospedado lá. A aplicação é empacotada com **Docker**, o que permite publicá-la de forma consistente em praticamente qualquer provedor de nuvem.
