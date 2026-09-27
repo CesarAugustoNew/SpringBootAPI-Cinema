@@ -12,7 +12,7 @@ Back-end de um sistema de cinema (catálogo de filmes, salas, sessões, reservas
 ![Docker](https://img.shields.io/badge/Container-Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
 ![Swagger](https://img.shields.io/badge/Docs-Swagger-85EA2D?style=flat-square&logo=swagger&logoColor=black)
 
-[**🔗 API publicada**](#) · [**📘 Documentação (Swagger)**](#) · [**🖥️ Repositório do front-end**](#)
+[**📘 Documentação (Swagger)**](https://springbootapi-cinema-1.onrender.com/swagger-ui/index.html) · [**🖥️ Repositório do front-end**](https://github.com/CesarAugustoNew/Projeto-Senai-Cinema)
 
 </div>
 
