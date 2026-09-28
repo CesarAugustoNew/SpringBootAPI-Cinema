@@ -22,8 +22,6 @@ Back-end de um sistema de cinema (catálogo de filmes, salas, sessões, reservas
 
 Esta é a API REST do CineSenai: guarda e organiza filmes, salas, sessões de exibição e as reservas de assento de cada usuário, além de um painel só para administradores. Ela não tem tela nenhuma — só recebe pedidos (do front-end React, ou de qualquer outro programa) e responde em formato de dados (JSON).
 
-O front-end que consome esta API é um projeto separado, feito em React ([link do repositório](#)).
-
 ## Funcionalidades
 
 - Cadastro de usuário e login com senha, com dois papéis: **usuário comum** e **administrador**
