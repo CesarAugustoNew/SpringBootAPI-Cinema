@@ -4,10 +4,12 @@ package com.Senai.Filmes.Service;
 import com.Senai.Filmes.DTO.Request.FilmeRequest;
 import com.Senai.Filmes.DTO.Response.FilmeResponse;
 import com.Senai.Filmes.Model.Filme;
+import com.Senai.Filmes.Repository.IAvaliacaoRepository;
 import com.Senai.Filmes.Repository.IFilmeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -21,6 +23,9 @@ public class FilmeService {
 
     @Autowired
     private IFilmeRepository filmeRepository;
+
+    @Autowired
+    private IAvaliacaoRepository avaliacaoRepository;
 
     //crud
     public List<FilmeResponse> listarTodos() {
@@ -57,8 +62,12 @@ public class FilmeService {
         return toResponse(filmeRepository.save(filme));
     }
 
+    // @Transactional: apaga as avaliações e o filme na mesma transação.
+    @Transactional
     public void deletar (UUID id) {
         Filme filme = filmeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Nenhum filme encontrado"));
+        // As avaliações referenciam o filme; precisam sair antes dele.
+        avaliacaoRepository.deleteByFilmeId(id);
         filmeRepository.delete(filme);
     }
 
