@@ -3,6 +3,7 @@ package com.Senai.Filmes.Config;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -27,6 +28,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> requisicaoInvalida(IllegalArgumentException e) {
         return resposta(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+    /*
+      Login com e-mail ou senha errados (BadCredentialsException,
+      UsernameNotFoundException etc. — todas herdam de AuthenticationException).
+
+      Sem este handler, a exceção escapava do controller, o Spring redirecionava
+      para /error (rota protegida) e o cliente recebia 403 com corpo vazio.
+      Agora devolvemos 401 com uma mensagem amigável.
+    */
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<Map<String, String>> credenciaisInvalidas(AuthenticationException e) {
+        return resposta(HttpStatus.UNAUTHORIZED, "E-mail ou senha incorretos.");
     }
 
     @ExceptionHandler(IllegalStateException.class)
