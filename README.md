@@ -40,7 +40,7 @@ Esta é a API REST do CineSenai: guarda e organiza filmes, salas, sessões de ex
 | Framework | Spring Boot |
 | Acesso ao banco | Spring Data JPA (Hibernate) |
 | Autenticação | Spring Security + JWT |
-| Banco de dados | PostgreSQL |
+| Banco de dados | PostgreSQL (Supabase) |
 | Documentação | Swagger / OpenAPI |
 | Empacotamento | Docker |
 | Publicação | Render |
@@ -82,4 +82,4 @@ Os pôsteres enviados pelo administrador são convertidos para **base64** e guar
 
 ## Deploy
 
-Publicada no **Render**, com banco de dados **PostgreSQL** também hospedado lá. A aplicação é empacotada com **Docker**, o que permite publicá-la de forma consistente em praticamente qualquer provedor de nuvem.
+Publicada no **Render**, com banco de dados **PostgreSQL** hospedado no **Supabase** (em um schema próprio, `cinema`). A aplicação é empacotada com **Docker**, o que permite publicá-la de forma consistente em praticamente qualquer provedor de nuvem.
